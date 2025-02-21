@@ -1,0 +1,61 @@
+<!-- filepath: /c:/Users/Wesley/Desktop/Proyectos/Bracelet project/BraceletProject/cart/templates/cart/detail.html -->
+{% extends 'core/layout.html' %}
+
+{% block title %}
+Carrito de Compras
+{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container px-4 px-lg-5 mt-5">
+        <h3 class="mb-4">Carrito de Compras</h3>
+        {% if cart_products %}
+            <ul class="list-group mb-4">
+                {% for item in cart_products %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            {{ item.product.name }} - C${{ item.product.price }}
+                            <form method="POST" action="{% url 'update_cart' item.product.id %}" class="d-inline">
+                                {% csrf_token %}
+                                <input type="number" name="quantity" value="{{ item.quantity }}" min="1" max="{{ item.product.available_units }}" class="form-control d-inline w-auto">
+                                <button type="submit" class="btn btn-sm btn-primary">Actualizar</button>
+                            </form>
+                        </div>
+                        <div>
+                            <span class="badge bg-primary rounded-pill">C$ {{ item.item_total|floatformat:2 }}</span>
+                            <a href="{% url 'cart_remove' item.product.id %}" class="btn btn-sm btn-danger ms-2 remove-from-cart">Eliminar</a>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+            <div class="d-flex justify-content-between align-items-center">
+                <h4>Total:</h4>
+                <h4>C$ {{ total_price|floatformat:2 }}</h4>
+            </div>
+            <a href="{% url 'build_whatsapp_message' %}" class="btn btn-primary mt-3">Comprar productos</a>
+        {% else %}
+            <p>Tu carrito está vacío.</p>
+        {% endif %}
+    </div>
+</section>
+
+<script>
+document.querySelectorAll('.remove-from-cart').forEach(function(button) {
+    button.addEventListener('click', function(event) {
+        event.preventDefault();
+        var url = this.href;
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', url, true);
+        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                document.getElementById('cart-count').innerText = response.cart_count;
+                location.reload(); // Recargar la página para actualizar el carrito
+            }
+        };
+        xhr.send();
+    });
+});
+</script>
+{% endblock %}

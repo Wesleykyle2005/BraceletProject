@@ -1,0 +1,71 @@
+<!-- filepath: /c:/Users/Wesley/Desktop/Proyectos/Bracelet project/BraceletProject/products/templates/products/products.html -->
+{% extends 'core/layout.html' %}
+
+{% block title %}
+Productos
+{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container px-4 px-lg-5 mt-5">
+        <form method="GET" class="mb-4" id="filter-form" action="{% url 'filter_products' %}">
+            <div class="row">
+                <div class="col-md-4">
+                    <select name="category" class="form-select" id="category-select">
+                        <option value="">Todas las Categorías</option>
+                        {% for category in categories %}
+                            <option value="{{ category.id }}" {% if request.GET.category == category.id|stringformat:"s" %}selected{% endif %}>{{ category.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </form>
+
+        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center" id="product-list">
+            {% include 'products/product_list.html' %}
+        </div>
+    </div>
+</section>
+
+<script>
+document.getElementById('category-select').addEventListener('change', function() {
+    var form = document.getElementById('filter-form');
+    var formData = new FormData(form);
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', form.action + '?' + new URLSearchParams(formData).toString(), true);
+    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            var response = JSON.parse(xhr.responseText);
+            document.getElementById('product-list').innerHTML = response.html;
+            attachAddToCartEvents(); // Reattach event listeners after updating the product list
+        }
+    };
+    xhr.send();
+});
+
+function attachAddToCartEvents() {
+    document.querySelectorAll('.add-to-cart').forEach(function(button) {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+            var form = this.closest('form');
+            var formData = new FormData(form);
+            var url = this.href + '?' + new URLSearchParams(formData).toString();
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', url, true);
+            xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    document.getElementById('cart-count').innerText = response.cart_count;
+                }
+            };
+            xhr.send();
+        });
+    });
+}
+
+// Attach event listeners on page load
+attachAddToCartEvents();
+</script>
+{% endblock %}

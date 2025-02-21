@@ -1,0 +1,79 @@
+<!-- filepath: /c:/Users/Wesley/Desktop/Proyectos/Bracelet project/BraceletProject/core/templates/core/home.html -->
+{% extends 'core/layout.html' %}
+
+{% block title %}
+Inicio
+{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container px-4 px-lg-5 mt-5">
+        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center" id="product-list">
+            {% for product in products %}
+                <div class="col mb-5">
+                    <div class="card h-100">
+                        <!-- Sale badge-->
+                        <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Unidades: {{ product.available_units }}</div>
+                        <!-- Product image-->
+                        <img class="card-img-top" src="{{ product.image_url }}" alt="{{ product.name }}" />
+                        <!-- Product details-->
+                        <div class="card-body p-4">
+                            <div class="text-center">
+                                <!-- Product name-->
+                                <h5 class="fw-bolder">{{ product.name }}</h5>
+                                <!-- Product categories-->
+                                <div class="d-flex justify-content-center small text-warning mb-2">
+                                    {% for category in product.categories.all %}
+                                        <span class="badge bg-secondary mx-1">{{ category.name }}</span>
+                                    {% endfor %}
+                                </div>
+                                <p class="text-center">
+                                    {{ product.description }}
+                                </p>
+                                <!-- Product price-->
+                                <strong>C$</strong>{{ product.price }}
+                            </div>
+                        </div>
+                        <!-- Product actions-->
+                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                            <form action="GET" class="form-control">
+                                <input type="hidden" name="product_id" value="{{ product.id }}">
+                                <input class="my-1" type="number" name="quantity" value="1" min="1" max="{{ product.available_units }}">
+                                <div class="text-center">
+                                    <a class="btn btn-outline-dark mt-auto add-to-cart" href="{% url 'cart_add' product.id %}">Añadir al carrito</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<script>
+function attachAddToCartEvents() {
+    document.querySelectorAll('.add-to-cart').forEach(function(button) {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+            var form = this.closest('form');
+            var quantity = form.querySelector('input[name="quantity"]').value;
+            var url = this.href + '?quantity=' + encodeURIComponent(quantity);
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', url, true);
+            xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    document.getElementById('cart-count').innerText = response.cart_count;
+                }
+            };
+            xhr.send();
+        });
+    });
+}
+
+// Attach event listeners on page load
+attachAddToCartEvents();
+</script>
+{% endblock %}
