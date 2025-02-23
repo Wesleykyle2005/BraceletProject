@@ -28,6 +28,26 @@ def filter_products(request):
         products = Product.objects.filter(available=True, categories__id=category_id).order_by('-created')
     else:
         products = Product.objects.filter(available=True).order_by('-created')
+
+    data = []
+    for product in products:
+        data.append({
+            'id': product.id,
+            'name': product.name,
+            'category': product.categories.all()[0].name if product.categories.exists() else '',
+            'description': product.description,
+            'price': product.price,
+            'image_url': product.image_url,
+            'available_units': product.available_units
+        })
     
-    html = render_to_string('products/product_list.html', {'products': products})
-    return JsonResponse({'html': html})
+    categories = Category.objects.all()
+    
+    return render(
+        request,
+        'products/products.html',
+        {
+            'products': products,
+            'categories': categories,
+        }
+    )
