@@ -5,7 +5,8 @@ from products.models import Product
 
 def home(request):
     products = Product.objects.filter(
-        available=True
+        available=True,
+        number_of_units_added_to_carts__gt=0
     ).order_by('-number_of_units_added_to_carts', '-created')[:5]
     return render(
         request,

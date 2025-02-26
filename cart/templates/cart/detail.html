@@ -21,9 +21,9 @@ Carrito de Compras
                                 <button type="submit" class="btn btn-sm btn-primary">Actualizar</button>
                             </form>
                         </div>
-                        <div>
-                            <span class="badge bg-primary rounded-pill">C$ {{ item.item_total|floatformat:2 }}</span>
-                            <a href="{% url 'cart_remove' item.product.id %}" class="btn btn-sm btn-danger ms-2 remove-from-cart">Eliminar</a>
+                        <div class="ms-5">
+                            <span class="badge bg-primary my-2 rounded-pill">C$ {{ item.item_total|floatformat:2 }}</span>
+                            <a href="{% url 'cart_remove' item.product.id %}" class="btn btn-sm btn-danger remove-from-cart">Eliminar</a>
                         </div>
                     </li>
                 {% endfor %}
@@ -32,7 +32,7 @@ Carrito de Compras
                 <h4>Total:</h4>
                 <h4>C$ {{ total_price|floatformat:2 }}</h4>
             </div>
-            <a href="{% url 'build_whatsapp_message' %}" class="btn btn-primary mt-3">Comprar productos</a>
+            <a href="{% url 'build_whatsapp_message' %}" class="btn btn-primary mt-3">Ir a <strong>Whatsapp</strong> para finalizar la compra</a>
         {% else %}
             <p>Tu carrito está vacío.</p>
         {% endif %}

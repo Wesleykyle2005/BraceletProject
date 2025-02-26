@@ -1,46 +1,101 @@
-<!-- filepath: /c:/Users/Wesley/Desktop/Proyectos/Bracelet project/BraceletProject/products/templates/products/product_list.html -->
 {% for product in products %}
     <div class="col mb-1 p-2"> 
         <div class="card h-100">
-            <!-- Sale badge-->
-            <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Unidades: {{ product.available_units }}</div>
-            <!-- Product image-->
+            <!-- Sale badge (descomenta si lo usas)
+            <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">
+                Unidades: {{ product.available_units }}
+            </div>
+            -->
+            <!-- Imagen del producto -->
             <img class="card-img-top" src="{{ product.image_url }}" alt="{{ product.name }}" />
-            <!-- Product details-->
+
+            <!-- Detalles del producto -->
             <div class="card-body px-1">
                 <div class="text-center">
-                    <!-- Product name-->
+                    <!-- Nombre -->
                     <h5 class="fw-bolder">{{ product.name }}</h5>
-                    <!-- Product categories-->
+
+                    <!-- Categorías -->
+                    <!-- Categorías -->
                     <div class="d-flex justify-content-center small text-warning mb-2">
                         {% for category in product.categories.all %}
-                            <span class="badge bg-secondary mx-1">{{ category.name }}</span>
+                            <a href="{% url 'filter_products' %}?category={{ category.id }}" class="badge bg-secondary mx-1 custom-link">{{ category.name }}</a>
                         {% endfor %}
                     </div>
-                    <p class="text-center mx-0">
-                        {{ product.description }}
-                    </p>
-                    <!-- Product price-->
+                    
+                    <!-- Precio -->
                     <strong>C$</strong>{{ product.price }}
-                </div>
-            </div>
-            <!-- Product actions-->
-            <div class="card-footer p-0 pt-0 border-top-0 bg-transparent">
-                <form action="#" method="post" class="form-control" onsubmit="return false;">
-                    <input type="hidden" name="product_id" value="{{ product.id }}">
-                    <div class="d-flex flex-column">
-                        <input class="my-1 form-control" 
-                               type="number" 
-                               name="quantity" 
-                               value="1" 
-                               min="1" 
-                               max="{{ product.available_units }}">
-                        <a class="btn btn-outline-dark mt-2 add-to-cart" href="{% url 'cart_add' product.id %}">
-                            Añadir al carrito
-                        </a>
+
+                    <!-- Ver más -->
+                    <div class="card-footer p-0 pt-0 border-top-0 bg-transparent">
+                        <button class="btn btn-outline-dark mt-2 view-more"
+                                data-bs-toggle="modal"
+                                data-bs-target="#productModal"
+                                data-id="{{ product.id }}"
+                                data-name="{{ product.name }}"
+                                data-description="{{ product.description }}"
+                                data-price="{{ product.price }}"
+                                data-image="{{ product.image_url }}"
+                                data-available-units="{{ product.available_units }}">
+                            Ver más
+                        </button>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>
 {% endfor %}
+
+<!-- Modal Único (fuera del bucle) -->
+<div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-4" id="productModalLabel"></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Contenedor de alertas -->
+                <div id="alert-container"></div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <img id="productModalImage" src="" alt="" class="img-fluid mb-3 rounded">
+                    </div>
+                    <div class="col-md-6">
+                        <strong>Descripción:</strong>
+                        <p id="productModalDescription" class="mb-3"></p>
+                        <p>
+                            <strong>Precio: C$</strong>
+                            <span id="productModalPrice"></span>
+                        </p>
+
+                        <form id="modalAddToCartForm" action="#" method="post" class="form-control" onsubmit="return false;">
+                            <input type="hidden" name="product_id" id="modalProductId">
+                            <div class="d-flex flex-column">
+                                <p>Elija la cantidad de productos:</p>
+                                <p><strong>Disponibles:</strong> <span id="available_units"></span></p>
+                                <input class="my-1 form-control"
+                                       type="number"
+                                       name="quantity"
+                                       id="modalProductQuantity"
+                                       value="1"
+                                       min="1">
+                                <button type="button" class="btn btn-primary mt-2" id="modalAddToCartButton">
+                                    Añadir al carrito
+                                </button>
+                            </div>
+                        </form>
+                        <div class="d-flex justify-content-between mt-3">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var cartDetailUrl = "{% url 'cart_detail' %}";
+</script>
