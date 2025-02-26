@@ -33,14 +33,13 @@ function attachViewMoreEvents() {
 
     document.getElementById('modalAddToCartButton').addEventListener('click', function() {
         var productId = document.getElementById('modalProductId').value;
-        var quantity = document.getElementById('modalProductQuantity').value;
-        var max = document.getElementById('modalProductQuantity').max;
+        var quantity = parseInt(document.getElementById('modalProductQuantity').value, 10);
+        var max = parseInt(document.getElementById('modalProductQuantity').max, 10);
 
-        if (!Number.isInteger(parseFloat(quantity)) || quantity <= 0) {
+        if (!Number.isInteger(quantity) || quantity <= 0) {
             showAlert('La cantidad debe ser un número entero positivo', 'warning');
             return;
         }
-
 
         if (quantity > max) {
             showAlert('La cantidad debe ser menor o igual a ' + max, 'warning');
@@ -64,6 +63,7 @@ function attachViewMoreEvents() {
         xhr.send();
     });
 }
+
 
 function showAlert(message, type) {
     let iconId = "#info-fill";
