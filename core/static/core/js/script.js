@@ -85,5 +85,5 @@ function showAlert(message, type) {
     setTimeout(function() {
         var alertInstance = bootstrap.Alert.getOrCreateInstance(alert);
         alertInstance.close();
-    }, 10000);
+    }, 2000);
 }
