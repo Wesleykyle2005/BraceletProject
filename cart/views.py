@@ -9,17 +9,27 @@ def cart_detail(request):
     cart = request.session.get('cart', {})
     cart_products = []
     total_price = 0
-    
+    final_cart = {}
+
     # Para cada producto en el carrito, recuperar sus datos y armar la lista
     for prod_id_str, quantity in cart.items():
-        product = get_object_or_404(Product, id=prod_id_str)
-        item_total = product.price * quantity
-        total_price += item_total
-        cart_products.append({
-            'product': product,
-            'quantity': quantity,
-            'item_total': item_total
-        })
+        try:
+            product = Product.objects.get(id=prod_id_str)
+            item_total = product.price * quantity
+            total_price += item_total
+            cart_products.append({
+                'product': product,
+                'quantity': quantity,
+                'item_total': item_total
+            })
+            # Mantener el producto en el carrito
+            final_cart[prod_id_str] = quantity
+        except Product.DoesNotExist:
+            # Si el producto fue eliminado de la BD, no se agrega
+            pass
+
+    # Actualizar sesión con el carrito limpio
+    request.session['cart'] = final_cart
 
     return render(request, 'cart/detail.html', {
         'cart_products': cart_products,
