@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .models import Product, Category
 from django.template.loader import render_to_string
 from django.http import JsonResponse
+from django.core.paginator import Paginator
 
 def products(request):
     category_id = request.GET.get('category')
@@ -9,14 +10,17 @@ def products(request):
         products = Product.objects.filter(available=True, categories__id=category_id).order_by('-created')
     else:
         products = Product.objects.filter(available=True).order_by('-created')
-    
+    paginator = Paginator(products, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     categories = Category.objects.all()
     
     return render(
         request,
         'products/products.html',
         {
-            'products': products,
+            'products': page_obj,
             'categories': categories,
         }
     )
@@ -28,6 +32,10 @@ def filter_products(request):
         products = Product.objects.filter(available=True, categories__id=category_id).order_by('-created')
     else:
         products = Product.objects.filter(available=True).order_by('-created')
+    
+    paginator = Paginator(products, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
 
     data = []
     for product in products:
@@ -47,7 +55,7 @@ def filter_products(request):
         request,
         'products/products.html',
         {
-            'products': products,
+            'products': page_obj,
             'categories': categories,
         }
     )
