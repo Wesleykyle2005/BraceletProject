@@ -3,6 +3,7 @@ from .models import Cart, CartProduct
 from products.models import Product
 from django.http import JsonResponse
 from urllib.parse import quote
+from django.contrib import messages 
 
 def cart_detail(request):
     # Recuperar el carrito desde la sesión
@@ -92,9 +93,13 @@ def cart_remove(request, product_id):
 
 
 
-
+WHATSAPP_ENABLED = False 
 
 def build_whatsapp_message(request):
+    if not WHATSAPP_ENABLED:
+        # Si la función está deshabilitada, mostrar una alerta y redirigir al carrito
+        messages.warning(request, "La función de envío por WhatsApp está deshabilitada en este momento.")
+        return redirect('cart_detail')
     cart = request.session.get('cart', {})
     cart_products = []
     total_price = 0

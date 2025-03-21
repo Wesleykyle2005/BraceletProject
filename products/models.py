@@ -1,4 +1,5 @@
 from django.db import models
+from Stores.models import Store
 
 class Category(models.Model):
     name=models.CharField(max_length=100)
@@ -15,6 +16,7 @@ class Product(models.Model):
     available=models.BooleanField(default=True)
     available_units=models.IntegerField(default=0)
     number_of_units_added_to_carts=models.IntegerField(default=0)
+    store = models.ForeignKey(Store, on_delete=models.CASCADE, related_name='products', default=1)  
     def __str__(self):
         return self.name
     

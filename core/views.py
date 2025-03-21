@@ -1,21 +1,9 @@
 from django.shortcuts import render
-from products.models import Product
-
-# Create your views here.
+from Stores.models import Store
 
 def home(request):
-    products = Product.objects.filter(
-        available=True,
-        number_of_units_added_to_carts__gt=0
-    ).order_by('-number_of_units_added_to_carts', '-created')[:5]
-    return render(
-        request,
-        'core/home.html',
-        {
-            'products': products
-        }
-    )
-
-
-def about(request):
-    return render(request, 'core/about.html')
+    stores = Store.objects.filter(active=True)
+    for store in stores:
+        store.latitude = str(store.latitude).replace(",", ".")
+        store.longitude = str(store.longitude).replace(",", ".")
+    return render(request, 'stores/index.html', {'stores': stores})

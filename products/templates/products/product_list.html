@@ -1,11 +1,7 @@
+
 {% for product in products %}
     <div class="col mb-1 p-2"> 
         <div class="card h-100">
-            <!-- Sale badge (descomenta si lo usas)
-            <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">
-                Unidades: {{ product.available_units }}
-            </div>
-            -->
             <!-- Imagen del producto -->
             <img class="card-img-top" src="{{ product.image_url }}" alt="{{ product.name }}" />
 
@@ -16,11 +12,13 @@
                     <h5 class="fw-bolder">{{ product.name }}</h5>
 
                     <!-- Categorías -->
-                    <!-- Categorías -->
                     <div class="d-flex justify-content-center small text-warning mb-2">
                         {% for category in product.categories.all %}
-                            <a href="{% url 'filter_products' %}?category={{ category.id }}" class="badge bg-secondary mx-1 custom-link">{{ category.name }}</a>
-                        {% endfor %}
+                        <a href="?category={{ category.id }}{% if selected_store %}&store={{ selected_store }}{% endif %}"
+                           class="badge bg-secondary mx-1 custom-link">
+                            {{ category.name }}
+                        </a>
+                    {% endfor %}
                     </div>
                     
                     <!-- Precio -->
@@ -46,11 +44,7 @@
     </div>
 {% endfor %}
 
-
-
-
-
-<!-- Modal Único (fuera del bucle) -->
+<!-- Modal único (fuera del bucle) -->
 <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
@@ -91,7 +85,9 @@
                             </div>
                         </form>
                         <div class="d-flex justify-content-between mt-3">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                Cerrar
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -99,7 +95,3 @@
         </div>
     </div>
 </div>
-
-<script>
-    var cartDetailUrl = "{% url 'cart_detail' %}";
-</script>

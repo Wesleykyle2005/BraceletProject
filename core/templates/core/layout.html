@@ -37,16 +37,18 @@
             <!-- Segunda fila -->
             <div class="row w-100 mt-2">
                 <div class="col d-flex align-items-center">
+                   
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex flex-row">
-                        <strong>
-                            <li class="nav-item mx-1"><a class="nav-link active" aria-current="page" href="{% url 'home' %}">Inicio</a></li>
-                        </strong>
-                        <strong>
-                            <li class="nav-item mx-1"><a class="nav-link active" aria-current="page" href="{% url 'products_all' %}">Productos</a></li>
-                        </strong>
-                        <strong>
-                            <li class="nav-item mx-1"><a class="nav-link active" href="{% url 'about' %}">Nosotros</a></li>
-                        </strong>
+                        <li class="nav-item mx-1">
+                            <a class="nav-link active" aria-current="page" href="{% url 'home' %}">
+                                <strong>Tiendas</strong>
+                            </a>
+                        </li>
+                        <li class="nav-item mx-1">
+                            <a class="nav-link active" aria-current="page" href="{% url 'products' %}">
+                                <strong>Productos</strong>
+                            </a>
+                        </li>
                     </ul>
                 </div>
                 <div class="col d-flex justify-content-end align-items-center position-relative">

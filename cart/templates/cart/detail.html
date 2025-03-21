@@ -32,7 +32,7 @@ Carrito de Compras
                 <h4>Total:</h4>
                 <h4>C$ {{ total_price|floatformat:2 }}</h4>
             </div>
-            <a href="{% url 'build_whatsapp_message' %}" class="btn btn-primary mt-3">Ir a <strong>Whatsapp</strong> para finalizar la compra</a>
+            <a href="{% url 'build_whatsapp_message' %}" class="btn btn-primary mt-3">Generar orden de compra</a>
         {% else %}
             <p>Tu carrito está vacío.</p>
         {% endif %}
