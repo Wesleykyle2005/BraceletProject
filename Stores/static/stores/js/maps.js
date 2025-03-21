@@ -24,7 +24,7 @@ stores.forEach(function(store) {
     marker.bindPopup(
         `<div style="color: black;">
             <b>${store.name}</b><br>${store.description}<br>
-            <a href="${store.url}" class="btn btn-primary btn-sm mt-2">Ver productos</a>
+            <a href="${store.url}" class="btn btn btn-outline-dark btn-sm mt-2">Ver productos</a>
         </div>`
     );
     console.log(store);
