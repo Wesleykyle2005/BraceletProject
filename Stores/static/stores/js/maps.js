@@ -37,7 +37,7 @@ map.fitBounds(bounds);
 // Añadir marcador por defecto con popup activo
 var defaultMarker = L.marker([12.1319899, -86.2698851]).addTo(map);
 defaultMarker.bindPopup(
-    `<div style="color: white;">
+    `<div style="color: black;">
         <b>Ubicación actual</b><br>Usted está aquí.
     </div>`
 ).openPopup(); // Abrir popup por defecto
