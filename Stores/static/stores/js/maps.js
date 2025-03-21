@@ -22,7 +22,7 @@ console.log(stores);
 stores.forEach(function(store) {
     var marker = L.marker([store.lat, store.lng], { icon: customIcon }).addTo(map);
     marker.bindPopup(
-        `<div style="color: white;">
+        `<div style="color: black;">
             <b>${store.name}</b><br>${store.description}<br>
             <a href="${store.url}" class="btn btn-primary btn-sm mt-2">Ver productos</a>
         </div>`
