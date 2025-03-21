@@ -7,18 +7,18 @@ Carrito de Compras
 
 {% block content %}
 <section class="py-5">
-    <div class="container px-4 px-lg-5 mt-5">
+    <div class="container px-4 px-lg-5 mt-5 ">
         <h3 class="mb-4">Carrito de Compras</h3>
         {% if cart_products %}
             <ul class="list-group mb-4">
                 {% for item in cart_products %}
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <li class="list-group-item d-flex justify-content-between align-items-center cardbg">
                         <div>
                             {{ item.product.name }} - C${{ item.product.price }}
                             <form method="POST" action="{% url 'update_cart' item.product.id %}" class="d-inline">
                                 {% csrf_token %}
                                 <input type="number" name="quantity" value="{{ item.quantity }}" min="1" max="{{ item.product.available_units }}" class="form-control d-inline w-auto">
-                                <button type="submit" class="btn btn-sm btn-primary">Actualizar</button>
+                                <button type="submit" class="btn btncustomize btn-sm ">Actualizar</button>
                             </form>
                         </div>
                         <div class="ms-5">
@@ -32,7 +32,7 @@ Carrito de Compras
                 <h4>Total:</h4>
                 <h4>C$ {{ total_price|floatformat:2 }}</h4>
             </div>
-            <a href="{% url 'build_whatsapp_message' %}" class="btn btn-primary mt-3">Generar orden de compra</a>
+            <a href="{% url 'build_whatsapp_message' %}" class="btn btncustomize btn-primary mt-3">Generar orden de compra</a>
         {% else %}
             <p>Tu carrito está vacío.</p>
         {% endif %}

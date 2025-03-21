@@ -18,6 +18,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/8532f70a6f.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{% static 'core/css/style.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'core/images/icon.png' %}">
 </head>
 <body>
     <!-- Navigation -->
@@ -25,8 +26,10 @@
         <div class="container px-2 px-lg-3">
             <div class="row w-100">
                 <div class="col d-flex align-items-center">
-                    <a href="{% url 'home' %}" style="text-decoration: none; color: black;">
-                        <h1>¡Bienvenidos!</h1>
+                    <a href="{% url 'home' %}" class="d-flex align-items-center text-decoration-none text-black">
+                        <!-- Logo -->
+                        <img src="{% static 'stores/images/custom-marker.png' %}" alt="Logo" class="me-3" style="width: 100px; height: 100px;">
+                        <h1 class="mb-0">¡Bienvenidos!</h1>
                     </a>
                     <div class="container my-1">
                         <div class="row">
@@ -44,11 +47,11 @@
     </nav>
 
     <!-- Header -->
-    <header class="bg-dark py-5">
-        <div class="container px-4 px-lg-5 my-5">
-            <div class="text-center text-white">
-                <h2 class="display-4 fw-bolder">Tiendas Disponibles</h2>
-                <p class="lead fw-normal text-white-50 mb-0">Encuentra las mejores tiendas cerca de ti</p>
+    <header class=" py-5 bannergb">
+        <div class="container px-4 px-lg-5 my-5 bannergb ">
+            <div class="text-center text-white ">
+                <h2 class="display-4 fw-bolder ">Tiendas Disponibles</h2>
+                <p class="lead fw-normal slogantext mb-0">Encuentra las mejores tiendas cerca de ti</p>
             </div>
         </div>
     </header>
@@ -56,24 +59,6 @@
     <!-- Main content -->
     <div class="container my-5">
         <div class="row">
-            <!-- Lista de tiendas -->
-            <div class="col-md-6">
-                <h3 class="mb-4">Lista de Tiendas</h3>
-                <ul class="list-group">
-                    {% for store in stores %}
-                    <li class="list-group-item">
-                        <h5>{{ store.name }}</h5>
-                        <p>{{ store.description }}</p>
-                        <p><strong>Dirección:</strong> {{ store.address }}</p>
-                        <p><strong>Teléfono:</strong> {{ store.phone }}</p>
-                        <!-- Enlace para ir a la lista de productos filtrada por tienda -->
-                        <a href="{% url 'products' %}?store={{ store.id }}" class="btn btn-primary btn-sm">
-                            Ver productos
-                        </a>
-                    </li>
-                {% endfor %}
-                </ul>
-            </div>
 
             <!-- Mapa -->
             <div class="col-md-6">
@@ -87,12 +72,33 @@
                                 "name": "{{ store.name|escapejs }}",
                                 "lat": {{ store.latitude }},
                                 "lng": {{ store.longitude }},
-                                "description": "{{ store.description|escapejs }}"
+                                "description": "{{ store.description|escapejs }}",
+                                "url": "{% url 'products' %}?store={{ store.id }}"
                             }{% if not forloop.last %},{% endif %}
                         {% endfor %}
                     ]
                 </script>
             </div>
+            <!-- Lista de tiendas -->
+            <div class="col-md-6 ">
+                <h3 class="mb-4">Lista de Tiendas</h3>
+                <ul class="list-group">
+                    {% for store in stores %}
+                    <li class="list-group-item my-2 cardbg">
+                        <h5>{{ store.name }}</h5>
+                        <p>{{ store.description }}</p>
+                        <p><strong>Dirección:</strong> {{ store.address }}</p>
+                        <p><strong>Teléfono:</strong> {{ store.phone }}</p>
+                        <!-- Enlace para ir a la lista de productos filtrada por tienda -->
+                        <a href="{% url 'products' %}?store={{ store.id }}" class="btn btncustomize  btn-sm">
+                            Ver productos
+                        </a>
+                    </li>
+                {% endfor %}
+                </ul>
+            </div>
+
+            
             
             
             

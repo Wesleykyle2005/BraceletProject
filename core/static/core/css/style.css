@@ -3,6 +3,27 @@ body {
     font-weight: 400; 
     letter-spacing: 0.075rem;
     font-size: 1rem; /* Default font size */
+    background-color: #FEFEFE;
+}
+.btncustomize{
+    background-color: #47A604;
+    color: #FEFEFE;
+}
+.btncustomize:hover{
+    background-color: #118C3C;
+    color: #FEFEFE;
+}
+.cardbg{
+    background-color: #F1B907;
+}
+.gbmodal{
+    background-color: #afeeee;
+}
+.bannergb {
+    background-color: #BF0B0C; /* Color de fondo */ 
+}
+.slogantext{
+    color: #FEFEFE;
 }
 h1 {
     font-family: 'Bebas Neue', sans-serif;
